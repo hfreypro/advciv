@@ -1320,8 +1320,11 @@ var advcivMain = function () {
   <div class="natgrid">${D.ast.order.map((n) => `<button type="button" data-act="persoNat" data-n="${n}" aria-pressed="${n === sel}">${esc(nname(n))}</button>`).join('')}</div>
   <h3>Cartes</h3>
   <div class="seg" role="group"><button type="button" data-act="skin" data-k="relooke" aria-pressed="${skin === 'relooke'}">Relookées</button><button type="button" data-act="skin" data-k="original" aria-pressed="${skin === 'original'}">Originales</button></div>
-  ${ui.confirm === 'new' || S.fresh ? `${S.fresh ? '' : '<div class="msg warn">Ta partie en cours sera remplacée.</div>'}<div class="btnrow"><button type="button" class="btn primary" data-act="persoNew">Commencer avec ${esc(nname(sel))}</button>${S.fresh ? '' : '<button type="button" class="btn" data-act="cancel">Annuler</button>'}</div>`
-      : `<div class="btnrow"><button type="button" class="btn" data-act="askNew">Nouvelle partie</button>${skin !== S.skin ? '<button type="button" class="btn" data-act="applySkin">Changer seulement les noms</button>' : ''}</div>`}</section>
+  ${ui.confirm === 'new' || S.fresh ? `${S.fresh ? '' : '<div class="msg warn">Ta partie en cours sera remplacée.</div>'}
+  <div class="lr"><span><b>Je commence au tour</b><br><span class="sub">si la partie est déjà commencée</span></span><span class="step"><button type="button" data-act="startTurn" data-d="-1" ${(ui.startTurn || 1) <= 1 ? 'disabled' : ''}>−</button><output>${ui.startTurn || 1}</output><button type="button" data-act="startTurn" data-d="1">+</button></span></div>
+  <div class="btnrow"><button type="button" class="btn primary" data-act="persoNew">Commencer avec ${esc(nname(sel))}</button>${S.fresh ? '' : '<button type="button" class="btn" data-act="cancel">Annuler</button>'}</div>`
+      : `<div class="lr"><span>Tour en cours <span class="sub">(correction)</span></span><span class="step"><button type="button" data-act="curTurn" data-d="-1" ${S.turn <= 1 ? 'disabled' : ''}>−</button><output>${S.turn}</output><button type="button" data-act="curTurn" data-d="1">+</button></span></div>
+  <div class="btnrow"><button type="button" class="btn" data-act="askNew">Nouvelle partie</button>${skin !== S.skin ? '<button type="button" class="btn" data-act="applySkin">Changer seulement les noms</button>' : ''}</div>`}</section>
   <section class="panel"><h3>Sauvegarde</h3><p class="sub">Copie ce texte pour garder ta partie ailleurs, ou colle une partie copiée.</p>
   <textarea id="io" spellcheck="false" aria-label="Partie au format texte">${esc(ui.io || JSON.stringify(S))}</textarea>
   <div class="btnrow"><button type="button" class="btn small" data-act="copy">Copier</button><button type="button" class="btn small" data-act="import">Charger le texte collé</button></div></section>
@@ -1986,11 +1989,13 @@ var advcivMain = function () {
     },
     guided: (d) => { S.guided = d.k === '1'; if (S.guided) { ui.tab = 'turn'; } },
     persoNat: (d) => { ui.natSel = [d.n]; },
+    startTurn: (d) => { ui.startTurn = clamp((ui.startTurn || 1) + +d.d, 1, 40); },
+    curTurn: (d) => { S.turn = clamp(S.turn + +d.d, 1, 40); },
     persoNew: () => {
       const g = !!S.guided;
-      S = newGame(ui.natSel || [S.players[0].nation], ui.skinSel ?? S.skin); S.guided = g; S.view = 'mine';
+      S = newGame(ui.natSel || [S.players[0].nation], ui.skinSel ?? S.skin); S.guided = g; S.view = 'mine'; S.turn = ui.startTurn || 1; ui.startTurn = null;
       ui.natSel = ui.skinSel = null; ui.confirm = null; ui.tab = g ? 'turn' : 'hand';
-      flash('ok', `Partie commencée : ${esc(nname(S.players[0].nation))}, tour 1.`);
+      flash('ok', `Partie commencée : ${esc(nname(S.players[0].nation))}, tour ${S.turn}. Saisis ta main, ton trésor, tes cités, ta case T.S.A. et tes cartes civ déjà acquises (Civ → « Je l’ai déjà »).`);
     },
     askPend: () => { ui.confirm = 'pend'; },
     persoEnd: (d) => {
