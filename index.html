@@ -1,5 +1,12 @@
 <title>Advanced Civ · Joueur</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#9A5A22">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="icone-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Civ">
 <meta name="color-scheme" content="light dark"><!-- « gère le sombre » : empêche Android d’assombrir la page de force ; l’app reste claire (data-theme="light") -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Alegreya+Sans:wght@400;500;700;800&display=swap">
 <style>
@@ -2345,3 +2352,4 @@ var advcivMain = function () {
 // Démarrage : par le crochet de mise à jour de la page claude.ai quand il existe, sinon directement.
 if (window.claude && window.claude.hot && window.claude.hot.ready) window.claude.hot.ready(advcivMain); else advcivMain();
 </script>
+<script>/* installation (Chrome / Safari) et marche hors ligne */ if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});</script>
