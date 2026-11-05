@@ -1,0 +1,17 @@
+{
+  "name": "Advanced Civilization · aide de jeu",
+  "short_name": "Civ",
+  "description": "Aide de jeu Advanced Civilization pour un joueur : main, achats de cartes civ, calamités, aide des phases.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3E6D8",
+  "theme_color": "#9A5A22",
+  "icons": [
+    { "src": "icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
